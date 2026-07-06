@@ -1,0 +1,18 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+cache/*.db
+cache/*.sqlite3
+logs/*.log
+uploads/*
+output/*
+!uploads/.gitkeep
+!output/.gitkeep
+.DS_Store
+
+# internal notes -- not part of the public repo
+README.md
+CLAUDE.md
+PROGRESS.md

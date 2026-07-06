@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Reports - Alumni Intelligence Agent{% endblock %}
+{% block content %}
+<h1 class="mb-4">Reports</h1>
+
+{% if not reports %}
+<div class="alert alert-info">No uploads yet. Upload a spreadsheet to get started.</div>
+{% else %}
+{% for report in reports %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ report.filename }}</h5>
+        <div class="row mb-2">
+            <div class="col-md-3"><strong>Total rows:</strong> {{ report.total_rows }}</div>
+            <div class="col-md-3"><strong>Processed:</strong> {{ report.rows_processed }}</div>
+            <div class="col-md-3"><strong>Skipped:</strong> {{ report.rows_skipped }}</div>
+            <div class="col-md-3"><strong>Reviewed:</strong> {{ report.rows_reviewed }}</div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-md-3"><strong>Missing email:</strong> {{ report.missing_email_count }}</div>
+            <div class="col-md-3"><strong>Missing LinkedIn:</strong> {{ report.missing_linkedin_count }}</div>
+            <div class="col-md-3">
+                <strong>Avg. confidence:</strong>
+                {{ "%.1f"|format(report.average_confidence) if report.average_confidence is not none else "-" }}
+            </div>
+            <div class="col-md-3">
+                <strong>API usage:</strong> {{ report.api_requests if report.api_requests is not none else "-" }}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <strong>Elapsed:</strong>
+                {% if report.elapsed_seconds is not none %}
+                    {{ "%.0f"|format(report.elapsed_seconds) }}s
+                {% else %}
+                    -
+                {% endif %}
+            </div>
+        </div>
+        <a class="btn btn-primary btn-sm" href="/reports/{{ report.upload_id }}/download">
+            Download completed spreadsheet
+        </a>
+        <a class="btn btn-outline-secondary btn-sm" href="/processing/{{ report.upload_id }}">
+            View processing
+        </a>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}

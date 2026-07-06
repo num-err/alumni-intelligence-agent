@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Processing - Alumni Intelligence Agent{% endblock %}
+{% block content %}
+<h1 class="mb-1">Processing: {{ upload.original_filename }}</h1>
+<p class="text-muted mb-4">{{ upload.total_rows }} total rows in this upload</p>
+
+{% if not is_running %}
+<button class="btn btn-primary mb-4"
+        hx-post="/processing/{{ upload.id }}/start"
+        hx-target="#progress-panel"
+        hx-swap="outerHTML">
+    Start Processing
+</button>
+{% endif %}
+
+{% include "partials/progress_panel.html" %}
+{% endblock %}

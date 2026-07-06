@@ -1,0 +1,37 @@
+{% if success %}
+<div class="alert alert-success" role="alert">
+    {{ message }}
+</div>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Parse Summary</h5>
+        <ul class="list-group list-group-flush mb-3">
+            <li class="list-group-item">Total rows: {{ upload.total_rows }}</li>
+            <li class="list-group-item">Already completed (skipped): {{ completed }}</li>
+            <li class="list-group-item">Queued for enrichment: {{ queued }}</li>
+        </ul>
+
+        <h6>Detected columns</h6>
+        <ul class="mb-3">
+            {% for header, field in upload.column_mapping.items() %}
+            <li><code>{{ header }}</code> &rarr; <code>{{ field }}</code></li>
+            {% endfor %}
+        </ul>
+
+        {% if upload.extra_columns %}
+        <h6>Preserved (unrecognized) columns</h6>
+        <ul>
+            {% for col in upload.extra_columns %}
+            <li><code>{{ col }}</code></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <a class="btn btn-primary" href="/processing/{{ upload.id }}">Go to Processing &rarr;</a>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-danger" role="alert">
+    {{ message }}
+</div>
+{% endif %}

@@ -1,0 +1,46 @@
+<tr id="review-row-{{ record.id }}">
+    <td>{{ record.first_name }} {{ record.last_name }}</td>
+    <td colspan="5">
+        {% if errors %}
+        <div class="alert alert-danger py-2 mb-2">
+            <ul class="mb-0">
+                {% for error in errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <form hx-post="/review/{{ record.id }}/edit"
+              hx-target="#review-row-{{ record.id }}"
+              hx-swap="outerHTML"
+              class="row g-2">
+            <div class="col-md-4">
+                <label class="form-label small">LinkedIn</label>
+                <input class="form-control form-control-sm" name="linkedin" value="{{ record.linkedin or '' }}">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label small">Email</label>
+                <input class="form-control form-control-sm" name="public_email" value="{{ record.public_email or '' }}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">Grad year</label>
+                <input class="form-control form-control-sm" name="graduation_year" value="{{ record.graduation_year or '' }}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">Country of origin</label>
+                <input class="form-control form-control-sm" name="country_origin" value="{{ record.country_origin or '' }}">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label small">Current location</label>
+                <input class="form-control form-control-sm" name="current_location" value="{{ record.current_location or '' }}">
+            </div>
+            <div class="col-12 mt-2">
+                <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary"
+                        hx-get="/review/{{ record.id }}/row"
+                        hx-target="#review-row-{{ record.id }}"
+                        hx-swap="outerHTML">Cancel</button>
+            </div>
+        </form>
+    </td>
+</tr>

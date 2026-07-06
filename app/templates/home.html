@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Home - Alumni Intelligence Agent{% endblock %}
+{% block content %}
+<div class="p-5 mb-4 bg-light rounded-3">
+    <h1 class="display-6">Alumni Intelligence Agent</h1>
+    <p class="col-md-8 fs-5">
+        Upload an alumni spreadsheet and this application will automatically research
+        each student's LinkedIn profile, public email, graduation year, country of
+        origin, and current location using web search and Claude, then hand back a
+        completed spreadsheet.
+    </p>
+    <a class="btn btn-primary btn-lg" href="/upload">Upload a Spreadsheet</a>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Review Queue - Alumni Intelligence Agent{% endblock %}
+{% block content %}
+<h1 class="mb-3">Review Queue</h1>
+<p class="text-muted mb-4">
+    {{ records|length }} row(s) need manual review (confidence below 80, or Claude flagged uncertainty).
+</p>
+
+{% if not records %}
+<div class="alert alert-success">Nothing to review right now.</div>
+{% else %}
+<table class="table align-middle">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Upload</th>
+            <th>Confidence</th>
+            <th>Candidate data</th>
+            <th>Evidence</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="review-rows">
+        {% for record in records %}
+        {% include "partials/review_row.html" %}
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}

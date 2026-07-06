@@ -1,0 +1,84 @@
+{% if progress is none %}
+<div id="progress-panel" class="text-muted">
+    Not started yet.
+</div>
+{% else %}
+<div id="progress-panel"
+     {% if is_running %}hx-get="/processing/{{ progress.upload_id }}/panel" hx-trigger="every 2s" hx-swap="outerHTML"{% endif %}>
+
+    {% if not is_running %}
+    <div class="alert alert-success d-flex justify-content-between align-items-center">
+        <span>Processing complete.</span>
+        <a class="btn btn-sm btn-primary" href="/reports/{{ progress.upload_id }}/download">
+            Download completed spreadsheet
+        </a>
+    </div>
+    {% endif %}
+
+    <div class="progress mb-3" style="height: 24px;">
+        <div class="progress-bar {% if is_running %}progress-bar-striped progress-bar-animated{% endif %}"
+             role="progressbar" style="width: {{ percent }}%;"
+             aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100">
+            {{ percent }}%
+        </div>
+    </div>
+
+    <div class="row mb-3 text-center">
+        <div class="col">
+            <div class="fs-4">{{ progress.completed }}</div>
+            <div class="text-muted small">Completed</div>
+        </div>
+        <div class="col">
+            <div class="fs-4">{{ progress.remaining }}</div>
+            <div class="text-muted small">Remaining</div>
+        </div>
+        <div class="col">
+            <div class="fs-4">{{ progress.failed }}</div>
+            <div class="text-muted small">Errors</div>
+        </div>
+        <div class="col">
+            <div class="fs-4">{{ progress.api_requests }}</div>
+            <div class="text-muted small">API requests</div>
+        </div>
+        <div class="col">
+            <div class="fs-4">
+                {{ "%.0f"|format(progress.average_confidence) if progress.average_confidence is not none else "-" }}
+            </div>
+            <div class="text-muted small">Avg. confidence</div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4"><strong>Elapsed:</strong> {{ elapsed_display }}</div>
+        <div class="col-md-4"><strong>Est. remaining:</strong> {{ eta_display if is_running else "-" }}</div>
+        <div class="col-md-4"><strong>Last completed:</strong> {{ progress.last_completed_student or "-" }}</div>
+    </div>
+
+    <h6>Worker status</h6>
+    <table class="table table-sm">
+        <thead>
+            <tr><th>Worker</th><th>Status</th><th>Current student</th></tr>
+        </thead>
+        <tbody>
+            {% for worker in progress.workers.values()|sort(attribute="worker_id") %}
+            <tr>
+                <td>{{ worker.worker_id }}</td>
+                <td>{{ worker.status }}</td>
+                <td>{{ worker.current_student or "-" }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="3" class="text-muted">No worker activity yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if progress.errors %}
+    <h6>Recent errors</h6>
+    <ul class="text-danger">
+        {% for error in progress.errors[-10:] %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+{% endif %}

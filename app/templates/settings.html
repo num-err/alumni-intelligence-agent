@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Settings - Alumni Intelligence Agent{% endblock %}
+{% block content %}
+<h1 class="mb-4">Settings</h1>
+
+{% if saved %}
+<div class="alert alert-success">Settings saved.</div>
+{% endif %}
+{% if errors %}
+<div class="alert alert-danger">
+    <ul class="mb-0">
+        {% for error in errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<form method="post" action="/settings" class="col-lg-6">
+    <div class="mb-3">
+        <label class="form-label">Claude API Key</label>
+        <input type="password" class="form-control" name="claude_api_key" placeholder="Currently: {{ view.claude_api_key_hint }}">
+        <div class="form-text">Leave blank to keep the current key.</div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Tavily API Key</label>
+        <input type="password" class="form-control" name="tavily_api_key" placeholder="Currently: {{ view.tavily_api_key_hint }}">
+        <div class="form-text">Leave blank to keep the current key.</div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Hunter.io API Key</label>
+        <input type="password" class="form-control" name="hunter_api_key" placeholder="Currently: {{ view.hunter_api_key_hint }}">
+        <div class="form-text">Leave blank to keep the current key. Used to find/verify a replacement email when the known one is missing or at the stale email domain below.</div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Institution Name</label>
+        <input type="text" class="form-control" name="institution_name" value="{{ view.institution_name }}">
+        <div class="form-text">Shown to Claude for identity verification and used in search queries, e.g. "Example University".</div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Stale Email Domain</label>
+        <input type="text" class="form-control" name="stale_email_domain" value="{{ view.stale_email_domain }}" placeholder="e.g. example.edu">
+        <div class="form-text">Addresses at this domain are treated as stale (alongside a missing email) and become eligible for replacement. Leave blank to only replace missing emails.</div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Worker Count</label>
+        <input type="number" class="form-control" name="worker_count" value="{{ view.worker_count }}" min="1" max="50">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Confidence Threshold</label>
+        <input type="number" class="form-control" name="confidence_threshold" value="{{ view.confidence_threshold }}" min="0" max="100">
+        <div class="form-text">Rows scoring below this go to the review queue (95+ always auto-writes).</div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Retry Count</label>
+        <input type="number" class="form-control" name="retry_count" value="{{ view.retry_count }}" min="0" max="20">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Cache Expiration (days)</label>
+        <input type="number" class="form-control" name="cache_expiration_days" value="{{ view.cache_expiration_days }}" min="1" max="365">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Output Directory</label>
+        <input type="text" class="form-control" name="output_dir" value="{{ view.output_dir }}">
+    </div>
+    <button type="submit" class="btn btn-primary">Save Settings</button>
+</form>
+{% endblock %}

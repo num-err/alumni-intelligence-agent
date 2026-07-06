@@ -1,0 +1,40 @@
+<tr id="review-row-{{ record.id }}">
+    <td>{{ record.first_name }} {{ record.last_name }}</td>
+    <td>{{ record.upload.original_filename }}</td>
+    <td>{{ record.confidence if record.confidence is not none else "-" }}</td>
+    <td>
+        <ul class="list-unstyled mb-0 small">
+            <li><strong>LinkedIn:</strong> {{ record.linkedin or "-" }}</li>
+            <li><strong>Email:</strong> {{ record.public_email or "-" }}</li>
+            <li><strong>Grad year:</strong> {{ record.graduation_year or "-" }}</li>
+            <li><strong>Country of origin:</strong> {{ record.country_origin or "-" }}</li>
+            <li><strong>Current location:</strong> {{ record.current_location or "-" }}</li>
+        </ul>
+    </td>
+    <td>
+        <ul class="small mb-0">
+            {% for line in record.evidence %}
+            <li>{{ line }}</li>
+            {% endfor %}
+        </ul>
+    </td>
+    <td class="text-nowrap">
+        <button class="btn btn-sm btn-success mb-1"
+                hx-post="/review/{{ record.id }}/approve"
+                hx-target="#review-row-{{ record.id }}"
+                hx-swap="outerHTML">Approve</button>
+        <button class="btn btn-sm btn-danger mb-1"
+                hx-post="/review/{{ record.id }}/reject"
+                hx-target="#review-row-{{ record.id }}"
+                hx-swap="outerHTML"
+                hx-confirm="Discard this candidate data?">Reject</button>
+        <button class="btn btn-sm btn-secondary mb-1"
+                hx-get="/review/{{ record.id }}/edit"
+                hx-target="#review-row-{{ record.id }}"
+                hx-swap="outerHTML">Edit</button>
+        <button class="btn btn-sm btn-outline-secondary mb-1"
+                hx-post="/review/{{ record.id }}/skip"
+                hx-target="#review-row-{{ record.id }}"
+                hx-swap="outerHTML">Skip</button>
+    </td>
+</tr>

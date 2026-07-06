@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Upload - Alumni Intelligence Agent{% endblock %}
+{% block content %}
+<h1 class="mb-4">Upload Spreadsheet</h1>
+<p class="text-muted">
+    Select the <code>Master_Spreadsheet.xlsx</code> file containing your alumni roster.
+</p>
+<form hx-post="/upload"
+      hx-target="#upload-result"
+      hx-swap="innerHTML"
+      hx-encoding="multipart/form-data"
+      class="mb-4">
+    <div class="mb-3">
+        <input class="form-control" type="file" name="file" accept=".xlsx" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+<div id="upload-result"></div>
+{% endblock %}
