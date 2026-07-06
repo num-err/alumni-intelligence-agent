@@ -13,6 +13,5 @@ output/*
 .DS_Store
 
 # internal notes -- not part of the public repo
-README.md
 CLAUDE.md
 PROGRESS.md
