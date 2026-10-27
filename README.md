@@ -11,6 +11,8 @@ Every write is confidence-scored: high-confidence results are applied
 automatically, everything else lands in a manual review queue so a human
 signs off before anything questionable reaches the final spreadsheet.
 
+**Stack:** Python · FastAPI · SQLAlchemy · SQLite · asyncio/aiohttp · Anthropic API (Claude) · Tavily Search · Hunter.io · pandas/openpyxl · Jinja2 + HTMX + Bootstrap 5 · pytest
+
 ## Features
 
 - **Multi-query web research** per person, merged/ranked, with a SQLite
@@ -65,6 +67,8 @@ Then open http://127.0.0.1:8000
 ```bash
 pytest
 ```
+
+148 tests cover the Claude, Tavily, and Hunter.io clients (against mocked responses), caching, the decision engine, evidence ranking, validators, the enrichment worker, review, and export.
 
 ## Workflow
 
